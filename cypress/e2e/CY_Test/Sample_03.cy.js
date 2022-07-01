@@ -18,15 +18,13 @@ it('check No broken links',function()
     //cy.visit('https://www.mathworks.com/videos/matlab-overview-61923.html')
     cy.visit('https://www.mathworks.com/')
     
-    cy.get('a').each($el=>{
-        if($el.prop('href').length >0)
-        {
-            const mes = $el.text()
-            expect($el,mes).to.have.attr('href').not.contains('undefined')
-            cy.log($el.attr('href'))
-        }
-
-    }
-    )
-})
+    cy.get('a:link').each(($ele)=>{
+        //const href = $ele.attr('href')
+        //cy.log(href)
+        //Verify broken links in a page
+        cy.request($ele.prop('href')).then((res)=>{
+            expect(res.status).to.eq(200)
+        })
+        })
+    })   
 })
